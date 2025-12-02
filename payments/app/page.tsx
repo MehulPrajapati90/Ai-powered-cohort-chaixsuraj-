@@ -3,9 +3,17 @@ import { currentUser } from '@/actions/auth'
 import UserButton from '@/components/auth/user-button';
 import LogoutButton from "@/components/auth/logout-button";
 import StripeComponent from "@/components/payment/stripe-component";
+import PolarComponents from "@/components/payment/polar-component";
+import { polarClient } from "@/config/payments/polar";
 
 const Home = async () => {
   const user = await currentUser();
+
+  const customer = await polarClient.customers.getStateExternal({
+    externalId: user?.id!
+  })
+
+  const hasActivePolarSubscription = customer?.activeSubscriptions && customer.activeSubscriptions.length > 0;
   return (
     <main className="flex flex-col items-center justify-center px-4 py-12 relative">
       <div className="flex min-h-auto flex-col items-center justify-center py-2 absolute top-5 right-5">
@@ -23,7 +31,7 @@ const Home = async () => {
         </TabsContent>
         <TabsContent value="polar">
           <h1 className="text-zinc-600 font-semibold">
-            In upcoming lectures...
+            <PolarComponents isPro={hasActivePolarSubscription} />
           </h1>
         </TabsContent>
         <TabsContent value="razorpay">
