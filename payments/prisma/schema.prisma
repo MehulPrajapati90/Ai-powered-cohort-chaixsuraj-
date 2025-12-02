@@ -6,6 +6,11 @@ datasource db {
   provider = "postgresql"
 }
 
+enum stripe_plan {
+  FREE
+  PREMIUM
+}
+
 model User {
   id            String    @id
   name          String
@@ -17,8 +22,23 @@ model User {
   sessions      Session[]
   accounts      Account[]
 
+  stripeCustomerId    String?
+  plan                stripe_plan         @default(FREE)
+  stripe_subscription StripeSubscription?
+
   @@unique([email])
   @@map("user")
+}
+
+model StripeSubscription {
+  id     String      @id @default(cuid())
+  userId String      @unique
+  plan   stripe_plan
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Session {
