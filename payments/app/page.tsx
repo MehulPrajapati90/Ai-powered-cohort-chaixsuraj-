@@ -5,14 +5,18 @@ import LogoutButton from "@/components/auth/logout-button";
 import StripeComponent from "@/components/payment/stripe-component";
 import PolarComponents from "@/components/payment/polar-component";
 import { polarClient } from "@/config/payments/polar";
+import RazorpayComponent from "@/components/payment/razorpay-component";
+import { getCurrentRazorpayStatus } from "@/actions/razorpay";
+import { redirect } from "next/navigation";
 
 const Home = async () => {
   const user = await currentUser();
-
+  const rzpStatus = await getCurrentRazorpayStatus();
+  
   const customer = await polarClient.customers.getStateExternal({
     externalId: user?.id!
   })
-
+  
   const hasActivePolarSubscription = customer?.activeSubscriptions && customer.activeSubscriptions.length > 0;
   return (
     <main className="flex flex-col items-center justify-center px-4 py-12 relative">
@@ -30,14 +34,10 @@ const Home = async () => {
           <StripeComponent plan={user?.plan!} />
         </TabsContent>
         <TabsContent value="polar">
-          <h1 className="text-zinc-600 font-semibold">
-            <PolarComponents isPro={hasActivePolarSubscription} />
-          </h1>
+          <PolarComponents isPro={hasActivePolarSubscription} />
         </TabsContent>
         <TabsContent value="razorpay">
-          <h1 className="text-zinc-600 font-semibold">
-            In upcoming lectures...
-          </h1>
+          <RazorpayComponent currentPlan={rzpStatus!} />
         </TabsContent>
       </Tabs>
       <div className="mt-10 flex flex-col items-center justify-center"><LogoutButton /></div>
