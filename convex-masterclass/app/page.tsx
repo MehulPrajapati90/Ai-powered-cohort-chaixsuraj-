@@ -1,15 +1,11 @@
-import { Button } from '@/components/ui/button'
-import { Sheet } from '@/components/ui/sheet';
-import React from 'react'
+import { Button } from "@/components/ui/button";
+import UserDetails from "@/components/user-details";
+import Image from "next/image";
 
-const Home = () => {
+export default function Home() {
   return (
-    <div className='min-h-screen w-full flex justify-center items-center bg-black'>
-      <Button>
-        Hello
-      </Button>
+    <div className="flex flex-col items-center justify-center h-screen">
+      <UserDetails />
     </div>
-  )
-}
-
-export default Home;
+  );
+};
