@@ -1,0 +1,21 @@
+{
+  "name": "bullmq",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsc -b && node dist/worker.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.18.3",
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "bullmq": "^5.66.3",
+    "ioredis": "^5.8.2"
+  }
+}
