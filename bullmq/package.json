@@ -5,7 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "tsc -b && node dist/worker.js"
+    "dev": "tsc -b && node dist/worker.js",
+    "build": "tsc -b",
+    "start": "node dist/worker.js"
   },
   "keywords": [],
   "author": "",
